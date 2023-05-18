@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>字符串和字节序列之间的转换</title>
+</head>
+<body>
+    <script>
+        const encoder = new TextEncoder();
+        const decoder = new TextDecoder();
+        const myString = "Hello, world!";
+        const myBuffer = encoder.encode(myString);
+        console.log(myBuffer); // Uint8Array(13) [72, 101, 108, 108, 111, 44, 32, 119, 111, 114, 108, 100, 33]
+        const decodedString = decoder.decode(myBuffer);
+        console.log(decodedString); // "Hello, world!"
+    </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blob Api</title>
+</head>
+<body>
+    <script>
+        // 创建一个Blob对象
+            const myBlob = new Blob(["Hello, world!"], { type: "text/plain" });
+            console.log(myBlob);
+            // 读取Blob对象的数据
+            const reader = new FileReader();
+            reader.addEventListener("loadend", () => {
+                console.log(reader.result);
+            });
+            reader.readAsText(myBlob);
+    </script>
+</body>
+</html>

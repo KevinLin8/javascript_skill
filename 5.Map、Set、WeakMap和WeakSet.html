@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeakSet</title>
+</head>
+<body>
+    <script>
+        // 1. Map：
+        const myMap = new Map();
+        const key1 = 'key1';
+        const key2 = { name: 'John' };
+        const key3 = function () { console.log('Hello!'); };
+        myMap.set(key1, 'value1');
+        myMap.set(key2, 'value2');
+        myMap.set(key3, 'value3');
+        console.log(myMap.get(key1)); // 'value1'
+        console.log(myMap.get(key2)); // 'value2'
+        console.log(myMap.get(key3)); // 'value3'
+        console.log(myMap.size); // 3
+        console.log('myMap:',myMap);
+
+        // 2. Set：
+        const mySet = new Set();
+        mySet.add('value1');
+        mySet.add('value2');
+        mySet.add('value3');
+        console.log(mySet.has('value1')); // true
+        console.log(mySet.has('value4')); // false
+        console.log(mySet.size); // 3
+        mySet.delete('value2');
+        console.log(mySet.size); // 2
+        console.log('mySet:',mySet);
+
+
+
+        //3. WeakMap：
+        let key4 = { name: 'John' };
+        let key5 = { name: 'Mary' };
+        let weakMap = new WeakMap();
+        weakMap.set(key4, 'value1');
+        weakMap.set(key5, 'value2');
+        key4 = null;
+        console.log(weakMap.get(key4)); // undefined
+        console.log(weakMap.get(key5)); // 'value2'
+        console.log('weakMap:',weakMap);
+
+
+        // 4. WeakSet：
+        let obj1 = { a: 1, b: 2 }
+        let obj2 = {};
+        const myweakset = new WeakSet();
+        myweakset.add(obj1)
+        myweakset.add(obj2)
+        console.log(myweakset);
+        console.log(myweakset.has(obj1));
+        obj2 = undefined
+        console.log(myweakset.has(obj2));
+        console.log('myweakset:', myweakset);
+
+
+    </script>
+</body>
+</html>

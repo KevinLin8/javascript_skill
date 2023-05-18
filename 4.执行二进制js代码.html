@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>js代码转成二进制并执行</title>
+</head>
+<body>
+    <script>
+        // 将js代码转成二进制
+            const jsCode = `
+                    function get_copyright(){
+                    var domain = "jshaman.com";
+                    var from_year = 2017;
+                    var copyright = "(c)" + from_year + "-" + (new Date).getFullYear() + "," + domain;
+                    return copyright;
+                    }
+                    console.log(get_copyright()); `;
+            // 将 JS 代码转换为二进制字符串
+            function convertToBinary (code) {
+                let binary = "";
+                for (let i = 0; i < code.length; i++) {
+                    const charCode = code.charCodeAt(i);
+                    // console.log('charCode:', charCode);
+                    const charBinary = charCode.toString(2).padStart(8, "0");
+                    binary += charBinary;
+                }
+                return binary;
+            }
+            const binaryCode = convertToBinary(jsCode);
+            // 输出二进制字符串
+            console.log(binaryCode);
+
+            // 执行二进制字符串
+            function executeBinary (binary) {
+                console.log("二进制字符串：", binary);
+                // 将二进制字符串按每 8 位截断，并将其转换成字节数组
+                const bytes = binary.match(/.{8}/g).map((byte) => parseInt(byte, 2));
+                console.log(bytes);
+                // 创建 ArrayBuffer
+                const buffer = new ArrayBuffer(bytes.length);
+                // 将字节数组写入 ArrayBuffer 中
+                const uint8Array = new Uint8Array(buffer);
+                bytes.forEach((byte, index) => (uint8Array[index] = byte));
+                // 使用 TextDecoder 解码 ArrayBuffer 中的内容
+                const code = new TextDecoder().decode(buffer);
+                console.log("执行结果：");
+                // 执行还原后的 JS 代码
+                return (new Function(code))();
+            }
+            executeBinary(binaryCode)
+
+    </script>
+</body>
+</html>

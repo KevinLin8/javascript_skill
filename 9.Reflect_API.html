@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflect API 可以用于实现元编程，例如动态调用对象的方法或构造函数。</title>
+</head>
+<body>
+    <script>
+        class MyClass {
+            constructor(value) {
+                this.value = value;
+            }
+            getValue () {
+                return this.value;
+            }
+        }
+
+        const myObject = Reflect.construct(MyClass, ["Hello, world!"]);
+        const myMethod = Reflect.get(myObject, "getValue");
+        const myValue = myMethod.call(myObject);
+        console.log(myValue); // "Hello, world!"
+    </script>
+</body>
+</html>

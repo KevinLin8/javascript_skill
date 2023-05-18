@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>时间密码</title>
+</head>
+<body>
+    <div>
+        <span>请设置密码：</span>
+        <input onkeydown="speed_password_check(event)" type="text">
+        <button onclick="init()">确定</button>
+    </div>
+    <div>
+        <span>请输入密码：</span>
+        <input onkeydown="speed_password_init(event)" type="text" id="pass">
+        <button onclick="check()">确定</button>
+
+    </div>    
+    <script>
+        let password_check = [], speed_check = [], password = [], speed = [];
+
+        function speed_password_check (event) {
+            password_check.push(String.fromCharCode(event.keyCode + 32));
+            speed_check.push(Date.now());
+        }
+
+        function init () {
+            if (password_check.length == 4) {
+                var msg = "密码：" + password_check.join("") + "，时间特征：" + speed_check;
+                console.log(msg)
+                alert("已初始化，" + msg);
+            } else {
+                alert("密码长度不正确，请重新设定");
+                password_check = [];
+                speed_check = [];
+            }
+        }
+
+        function speed_password_init(e){
+            password.push(String.fromCharCode(e.keyCode+32))
+            speed.push(Date.now())
+        }
+
+        function check () {
+                //校验密码
+                if (password_check.join("") == password.join("")) {
+                    //检验时间值，容错值：300 毫秒
+                    var time_range = 300;
+                    var check_ok = true;
+                    //判断 4 个字母每次输时的时间间隔，在设定的容错值范围内，视为正常
+                    if (Math.abs((speed[1] - speed[0]) - (speed_check[1] - speed_check[0])) >= time_range) {
+                        check_ok = false;
+                    }
+                    if (Math.abs((speed[2] - speed[1]) - (speed_check[2] - speed_check[1])) >= time_range) {
+                        check_ok = false;
+                    }
+                    if (Math.abs((speed[3] - speed[2]) - (speed_check[3] - speed_check[2])) >= time_range) {
+                        check_ok = false;
+                    }
+                    if (check_ok == false) {
+                        alert("密码时间校验失败");
+                        password = [];
+                        speed = [];
+                    } else {
+                        alert("密码、时间全部校验成功")
+                    }
+                } else {
+                    console.log(password,speed);
+                    alert("密码错误");
+                    password = [];
+                    speed = [];
+                }
+
+        }
+
+    </script>
+</body>
+</html>

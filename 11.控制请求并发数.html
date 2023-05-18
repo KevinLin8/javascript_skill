@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<svg id="logo-72" width="100" height="100" viewBox="0 0 53 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M23.2997 0L52.0461 28.6301V44H38.6311V34.1553L17.7522 13.3607L13.415 13.3607L13.415 44H0L0 0L23.2997 0ZM38.6311 15.2694V0L52.0461 0V15.2694L38.6311 15.2694Z"
+        class="ccustom" fill="#212326"></path>
+</svg>
+    <script>
+        function limitRequest (fn, limit = 10, time = 5000) {
+                let count = 0;
+                let startTime = Date.now();
+                let timer;
+                return function (...args) {
+                    return new Promise((resolve, reject) => {
+                        clearTimeout(timer);
+                        if (count < limit) {
+                            count++;
+                            fn(...args)
+                                .then(res => {
+                                    count--;
+                                    resolve(res);
+                                })
+                                .catch(err => {
+                                    count--;
+                                    reject(err);
+                                });
+                        } else {
+                            let currentTime = Date.now();
+                            if (currentTime - startTime < time) {
+                                timer = setTimeout(() => {
+                                    count = 0;
+                                    startTime = Date.now();
+                                    console.log(this);
+                                    this(...args)
+                                        .then(res => {
+                                            count--;
+                                            resolve(res);
+                                        })
+                                        .catch(err => {
+                                            count--;
+                                            reject(err);
+                                        });
+                                }, time - (currentTime - startTime));
+                            } else {
+                                count = 0;
+                                startTime = Date.now();
+                                console.log(this);
+                                this(...args)
+                                    .then(res => {
+                                        count--;
+                                        resolve(res);
+                                    })
+                                    .catch(err => {
+                                        count--;
+                                        reject(err);
+                                    });
+                            }
+                        }
+                    });
+                };
+            }
+
+            function fetchData (url) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        resolve(`Data from ${url}`);
+                    }, 1000);
+                });
+            }
+
+            const limitFetch = limitRequest(fetchData);
+
+            for (let i = 0; i < 20; i++) {
+                limitFetch(`http://example.com/api/${i}`)
+                    .then(res => {
+                        console.log(res);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    });
+            }
+
+
+    </script>
+</body>
+</html>
